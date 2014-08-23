@@ -1,0 +1,27 @@
+### BEGIN INIT INFO
+# Provides:             fakeu
+# Required-Start:
+# Required-Stop:
+# Default-Start:        2 3 4 5
+# Default-Stop:         0 1 6
+# Short-Description:    Node.js implementation of 'fakeu' for X10
+### END INIT INFO
+
+# not needed: node is on path: export PATH=$PATH:/opt/node/bin
+export NODE_PATH=$NODE_PATH:/usr/local/lib/node_modules
+export HOME=/srv/node
+
+case "$1" in
+  start)
+    /usr/local/lib/node_modules/forever/bin/forever start -p $HOME/.forever --sourceDir=/srv/node fakeu.js
+    ;;
+  stop)
+    exec /usr/local/lib/node_modules/forever/bin/forever stopall
+    ;;
+  *)
+
+  echo "Usage: /etc/init.d/nodeup {start|stop}"
+  exit 1
+  ;;
+esac
+exit 0
