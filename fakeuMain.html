@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> 
+<html>
+<!-- A simple GUI for heyu. 
+	robcranfill@gmail.com
+	Handles two different screen sizes (an iPhone and a Nexus7) - crudely.
+-->
+<head>
+	<title>fakeu v3.0</title>
+	<script type='text/javascript' src='http://code.jquery.com/jquery-latest.min.js'></script>
+
+	<link
+		rel="stylesheet"
+		type="text/css"
+		href="fakeu_other.css"
+		/>
+	
+		<script>
+			function sendToHeyu(unitCode, action)
+				{
+				console.log("Local HTML page requesting: unitCode=" + unitCode + ", action=" + action);
+				$.ajax(
+						{
+						url: 'fakeu',
+						data: {unitCode: unitCode, action: action},
+						type: 'get',
+						success: function(output)
+							{
+							console.log("Response was: " + output);
+							}
+						}
+					);
+				}
+		</script>
+	
+	<!-- Magic tag for iPhone to create non-browser window for "Home Screen" shortcut -->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+
+</head>
+
+<body>
+	
+	<table border="0">
+		
+		<tr>
+		 <td class='table_column_label'>Living Room</td>
+		 <td class='table_column_button'><a href='#' class='btn green' onclick='sendToHeyu("A1", "on" )'></a></td>
+		 <td class='table_column_button'><a href='#' class='btn red'   onclick='sendToHeyu("A1", "off")'></a></td>
+		</tr>
+		
+		<tr>
+		 <td class='table_column_label'>Front Stairs</td>
+		 <td class='table_column_button'><a href='#' class='btn green' onclick='sendToHeyu("A2", "on" )'></a></td>
+		 <td class='table_column_button'><a href='#' class='btn red'   onclick='sendToHeyu("A2", "off")'></a></td>
+		</tr>
+		
+		<tr>
+		 <td class='table_column_label'>Front Deck</td>
+		 <td class='table_column_button'><a href='#' class='btn green' onclick='sendToHeyu("A4", "on" )'></a></td>
+		 <td class='table_column_button'><a href='#' class='btn red'   onclick='sendToHeyu("A4", "off")'></a></td>
+		</tr>
+		
+		<tr>
+		 <td class='table_column_label'>Front Porch</td>
+		 <td class='table_column_button'><a href='#' class='btn green' onclick='sendToHeyu("B1", "on" )'></a></td>
+		 <td class='table_column_button'><a href='#' class='btn red'   onclick='sendToHeyu("B1", "off")'></a></td>
+		</tr>
+		
+		<tr>
+		 <td class='table_column_label'>Back Eaves</td>
+		 <td class='table_column_button'><a href='#' class='btn green' onclick='sendToHeyu("B2", "on" )'></a></td>
+		 <td class='table_column_button'><a href='#' class='btn red'   onclick='sendToHeyu("B2", "off")'></a></td>
+		</tr>
+		
+		<tr>
+		 <td class='table_column_label'>(test)</td>
+		 <td class='table_column_button'><a href='#' class='btn green' onclick='sendToHeyu("A13", "on" )'></a></td>
+		 <td class='table_column_button'><a href='#' class='btn red'   onclick='sendToHeyu("A13", "off")'></a></td>
+		</tr>
+		
+	</table>
+
+</body>
+</html>
