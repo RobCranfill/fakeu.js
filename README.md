@@ -33,7 +33,7 @@ JavaScript buttons from
 <a href='http://jquery.com/' target='_blank'>JQuery</a>, and 
 <a href='http://api.jquery.com/jquery.ajax/' target='_blank'>AJAX</a>.
 
-Pressing a button on the GUI posts a GET to this same script, which is handled and {{exec}}ed.
+Pressing a button on the GUI posts a GET to this same script, which is handled and exec'ed.
 
 Anyway, enjoy! Feel free to re-use, to ask me questions, etc.
 
