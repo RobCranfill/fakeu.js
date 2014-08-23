@@ -2,7 +2,8 @@ fakeu
 ====
 A simple implementation of a web interface to heyu, the 
 <a href='http://en.wikipedia.org/wiki/X10_%28industry_standard%29' target='_blank'>X10</a>
- controller.
+ controller, implemented with Node.js. (See my other project, 
+ <a href='https://github.com/RobCranfill/fakeu'>fakeu</a>, for the initial PHP version of this web app.)
 
 **Table of Contents**
 
