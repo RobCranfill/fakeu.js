@@ -1,4 +1,4 @@
-fakeu
+fakeu.js
 ====
 A simple implementation of a web interface to heyu, the 
 <a href='http://en.wikipedia.org/wiki/X10_%28industry_standard%29' target='_blank'>X10</a>
