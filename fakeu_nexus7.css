@@ -1,5 +1,5 @@
 /* 
-	Stylesheet which will be used with anything other than an iPhone or a Nexus 7.
+	Stylesheet which will be used with a Nexus 7.
 
 	From http://www.sanwebe.com/2013/01/40-css-buttons-from-codepen
 	Inspired by http://dribbble.com/shots/693683-iOS-App-Icon-Switch?list=popular&offset=148
@@ -16,5 +16,5 @@ td
 	{
 	font-family: Oswald;
 	}
-.table_column_label  {width: 200px; text-align: right; color: green; font-size: 48px;}
+.table_column_label  {width: 320px; text-align: right; color: yellow; font-size: 48px;}
 .table_column_button {width: 280px;}

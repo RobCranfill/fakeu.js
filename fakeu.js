@@ -26,7 +26,9 @@ var Fs				  = require("fs");
 var Http				= require("http");
 var Path				= require("path");
 var Querystring	= require("querystring");
+var Transform		= require('stream').Transform;
 var Url					= require("url");
+
 
 var requestCount_ = 0;
 var heyuCount_ = 0;
@@ -53,11 +55,12 @@ var contentTypes_ = {
 																	Action is "on" or "off"
 
 */
-function router(url, resp) {
+function router(req, resp) {
 
   console.log("-----------------------------------");
 	requestCount_++;
 
+	var url = req.url;
   var parsedURL = Url.parse(url);
   console.log("Request #" + requestCount_ + " for path " + parsedURL.pathname + " received.");
 
@@ -86,23 +89,53 @@ function router(url, resp) {
 
 		console.log("Loading main page....");
 
+		// Find out what browser is in use, to scale & modify the GUI appropriately.
+		//
+		userAgent = req.headers["user-agent"];
+		console.log("userAgent: " + userAgent);
+		var cssFileName = "fakeu_other.css";
+		if (userAgent.indexOf("Nexus 7") > -1) {
+			cssFileName = "fakeu_nexus.css";
+			}
+		else
+		if (userAgent.indexOf("iPhone") > -1) {
+			cssFileName = "fakeu_iphone.css";
+			}
+		console.log("CSS file: " + cssFileName);
+	
 		var fileStream = Fs.createReadStream("./fakeuMain.html");
 		fileStream.on('error', function(error) {
 			if (error.code === 'ENOENT') {
 				resp.statusCode = 404;
-				resp.end(http.STATUS_CODES[404]);
+				resp.end(Http.STATUS_CODES[404]);
 			  console.log("!Error 404!");
 				} 
 			else {
 				resp.statusCode = 500;
-				resp.end(http.STATUS_CODES[500]);
+				resp.end(Http.STATUS_CODES[500]);
 			  console.log("!Error 500!");
 				}
 			});
 		console.log("File loaded.");
 	
 		resp.writeHead(200, {"Content-Type": "text/html"});
-		fileStream.pipe(resp);
+		
+		
+		// Instead of simply doing
+		//		fileStream.pipe(resp);
+		// we transform the stream, substituting the name of the CSS file to use.
+		//
+		var parser = new Transform();
+		parser._transform = function(data, encoding, done) {
+			var dataAsString = data.toString().replace("_CSS_FILE_NAME_", cssFileName);
+			console.log("Transformed:\n-- in --\n" + data + "\n-- out --\n" + dataAsString);
+			this.push(dataAsString);
+			done();
+			};
+
+		// Pipe the streams
+		//
+		fileStream.pipe(parser).pipe(resp);
 
 		console.log("Page served!");
 		
@@ -129,7 +162,7 @@ function router(url, resp) {
 			return;
 			}
 		heyuCount_++;
-		var heyuCommand = "heyu f" + action + " " + unitCode;
+		var heyuCommand = "/usr/local/bin/heyu f" + action + " " + unitCode;
 		console.log("heyu command #" + heyuCount_ + ": '" + heyuCommand + "'");
 
 		Exec.exec(heyuCommand, function (error, stdout, stderr) {
@@ -215,7 +248,7 @@ function start(router) {
 			return;
 			}
 
-    router(request.url, response);
+    router(request, response);
 
     console.log("Request routed");
 	  }
