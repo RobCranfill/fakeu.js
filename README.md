@@ -46,7 +46,7 @@ Screen shot
 
 Requirements
 ====
-Node.js (I'm using v0.10.31) and of course 'heyu' (mine is 2.10).
+Node.js (I'm using v0.10.31) and of course 'heyu' (mine is 2.10). In order to run this as a service on Linux, I used the Node utility <a href='https://github.com/nodejitsu/forever'>"forever"</a>.
 
 
  /rob
