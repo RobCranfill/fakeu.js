@@ -46,7 +46,7 @@ var contentTypes_ = {
 
 /*
 	Handle:
-	
+
 		Path													Action
 		--------------								--------------
 		/fakeu												Show main page
@@ -62,34 +62,21 @@ function router(req, resp) {
 
 	var url = req.url;
   var parsedURL = Url.parse(url);
+  
   console.log("Request #" + requestCount_ + " for path " + parsedURL.pathname + " received.");
-
   console.log("Routing a request for " + parsedURL.pathname);
-
 	console.log('  search: ' + parsedURL.search);
-//	console.log('   query: ' + JSON.stringify(parsedURL.query));
 	console.log('   query: ' + parsedURL.query);
 	console.log('pathname: ' + parsedURL.pathname);
 	console.log('    path: ' + parsedURL.path);
 	console.log('    href: ' + parsedURL.href);
 
-
-/*
-	if (parsedURL.pathname !== "/fakeu") {
-		console.log("!We don't offer that service!");
-		handleBadRequest(resp);
-		return;
-		}
-*/
-	
 	if (parsedURL.path === "/fakeu") {
-	
-//  	resp.writeHead(200, {"Content-Type": "text/plain"});
-//		resp.write("This is the main fakeu page");
 
 		console.log("Loading main page....");
 
-		// Find out what browser is in use, to scale & modify the GUI appropriately.
+		// Find out what browser is in use, to use the right CSS file
+		// to scale the GUI appropriately.
 		//
 		userAgent = req.headers["user-agent"];
 		console.log("userAgent: " + userAgent);
@@ -102,7 +89,9 @@ function router(req, resp) {
 			cssFileName = "fakeu_iphone.css";
 			}
 		console.log("CSS file: " + cssFileName);
-	
+
+		// Open the (mostly) static HTML file we will serve.
+		//
 		var fileStream = Fs.createReadStream("./fakeuMain.html");
 		fileStream.on('error', function(error) {
 			if (error.code === 'ENOENT') {
@@ -117,10 +106,9 @@ function router(req, resp) {
 				}
 			});
 		console.log("File loaded.");
-	
+
 		resp.writeHead(200, {"Content-Type": "text/html"});
-		
-		
+
 		// Instead of simply doing
 		//		fileStream.pipe(resp);
 		// we transform the stream, substituting the name of the CSS file to use.
@@ -128,7 +116,7 @@ function router(req, resp) {
 		var parser = new Transform();
 		parser._transform = function(data, encoding, done) {
 			var dataAsString = data.toString().replace("_CSS_FILE_NAME_", cssFileName);
-			console.log("Transformed:\n-- in --\n" + data + "\n-- out --\n" + dataAsString);
+//			console.log("Transformed:\n-- in --\n" + data + "\n-- out --\n" + dataAsString);
 			this.push(dataAsString);
 			done();
 			};
@@ -142,8 +130,9 @@ function router(req, resp) {
 		return;
 		}
 
-	// Hopefully, a request like:
-	// http://localhost:8888/fakeu?unitCode=A1&action=on
+
+	// We are looking to handle a request like:
+	// 	http://host:8888/fakeu?unitCode=A1&action=on
 	//
 	if (parsedURL.query) {
 	
@@ -154,13 +143,17 @@ function router(req, resp) {
 		var action   = parsedQuery["action"];
 		console.log("unitCode: " + unitCode + "; action: " + action);
 	
-		// check for OK values
+		// Check for OK values
 		// TODO: CHECK UNIT CODE
+		//
 		if (action !== "on" & action !== "off") {
 			console.log("!Bad action!");
 			handleBadRequest(resp);
 			return;
 			}
+
+		// Execute heyu!
+		//
 		heyuCount_++;
 		var heyuCommand = "/usr/local/bin/heyu f" + action + " " + unitCode;
 		console.log("heyu command #" + heyuCount_ + ": '" + heyuCommand + "'");
@@ -173,19 +166,21 @@ function router(req, resp) {
 				}
 			});
 
-		// temporarily
-		resp.writeHead(200, {"Content-Type": "text/plain"});
-		resp.write("parsedURLQuery OK");
+		// Not sure what the heck is going on here.
+		// If we don't end the response, the browser isn't happy.
+		// Kinda makes sense.
+		//
 		resp.end();
-		console.log("parsedURLQuery OK");
-	
+
 		return;
 		} // parsedURLQuery
-		
+	
 
-
-
+	// At this point, it's not a request for the main page or for a 'heyu' command.
+	// It may be a request for a supporting page, such as a .css file.
+	//
   // Get the extension; is it a special file we'll handle?
+  //
   var extension = Path.extname(url);
 	console.log("Checking extension for '" + parsedURL.path + "': '" + extension + "'");
 
@@ -227,34 +222,31 @@ function router(req, resp) {
 		}
 
 
-	// temporarily
-	resp.writeHead(200, {"Content-Type": "text/plain"});
-	resp.write("FELL OFF END");
+	// Also not sure when/if/why this would happen.
+	// It doesn't seem to.
+	//
 	resp.end();
-	console.log("FELL OFF END");
-
-  console.log("End of router");
-  
+	console.log(" *** FELL OUT OF END OF ROUTER *** ");
 	}
 
 
+/*
+	Start the 'router', handling requests.
+*/
 function start(router) {
 
   function onRequest(request, response) {
-
   	if (request.method !== "GET") {
 			console.log("!Not a GET!");
 			handleBadRequest(response);
 			return;
 			}
-
     router(request, response);
-
     console.log("Request routed");
 	  }
 
   Http.createServer(onRequest).listen(8888);
-  console.log("Server has started.");
+  console.log("Server has started on port 8888.");
 	}
 
 
@@ -262,6 +254,7 @@ function handleBadRequest(resp) {
 	resp.statusCode = 404;
 	resp.end('404\n');
 	}
+
 
 start(router);
 
