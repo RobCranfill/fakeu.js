@@ -7,7 +7,7 @@
 	All dimensions doubled from original
 */
 @import url('http://fonts.googleapis.com/css?family=Oswald');
-@import url('switchbutton_big.css');
+@import url('switchbutton_other.css');
 
 
 /* Table-related
@@ -16,5 +16,5 @@ td
 	{
 	font-family: Oswald;
 	}
-.table_column_label  {width: 200px; text-align: right; color: green; font-size: 48px;}
-.table_column_button {width: 280px;}
+.table_column_label  {width: 200px; text-align: right; color: green; font-size: 24px;}
+.table_column_button {width: 140px;}
