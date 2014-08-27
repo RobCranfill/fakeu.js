@@ -45,7 +45,8 @@ var contentTypes_ = {
 //	'.html': 'text/html',
 //	'.js'  : 'text/javascript',
 //	'.json': 'application/json',
-	'.css' : 'text/css'
+	'.css' : 'text/css',
+	'.png' : 'image/png'
 	};
 
 
