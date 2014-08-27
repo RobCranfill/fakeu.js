@@ -4,7 +4,7 @@
 	23/Aug/2014 - First js version, with no client screen size accomodations.
 	24/Aug/2014 - 2nd version - does do screen size accomodations (in the css, actually).
 	
-  Copyright (C) 2014 Rob Cranfill (robcranfill@gmail.com)
+	Copyright (C) 2014 Rob Cranfill (robcranfill@gmail.com)
 	
 		This program is free software; you can redistribute it and/or modify
 		it under the terms of the GNU General Public License as published by
@@ -19,18 +19,18 @@
 		You should have received a copy of the GNU General Public License along
 		with this program; if not, write to the Free Software Foundation, Inc.,
 		51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-    
+
 */
 
-// Perhaps cuz I'm a Java programmer, I like to name these sorts of things - whether 
-// Classes - with an initial upper case letter.
+// Perhaps cuz I'm a Java programmer, I like to name these sorts of things -  
+// Classes, right? Or class-like things, anyway - with an initial upper case letter.
 //
-var ChildProcess	= require('child_process');
+var ChildProcess	= require("child_process");
 var Fs						= require("fs");
 var Http					= require("http");
 var Path					= require("path");
 var QueryString		= require("querystring");
-var Stream				= require('stream');
+var Stream				= require("stream");
 var Url						= require("url");
 
 // Simple global vars - named with an underscore after.
